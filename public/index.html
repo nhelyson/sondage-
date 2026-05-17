@@ -6,7 +6,6 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0" />
     <title>Consultation Citoyenne - Service Client Congo</title>
-    <!-- Chargement de Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
       .screen {
@@ -44,16 +43,14 @@
   </head>
   <body
     class="bg-slate-100 text-slate-800 font-sans min-h-screen flex items-center justify-center p-4 antialiased">
-    <!-- Conteneur Principal -->
     <div
       class="w-full max-w-md bg-white rounded-[32px] shadow-[0_24px_48px_-12px_rgba(0,0,0,0.08)] p-7 border border-slate-100 relative overflow-hidden">
-      <!-- HEADER AVEC BOUTON RETOUR ET BARRE DE PROGRESSION -->
+      <!-- HEADER ET PROGRESSION -->
       <div
         id="appHeader"
         class="mb-8 hidden">
         <div class="flex justify-between items-center mb-3">
           <div class="flex items-center space-x-2">
-            <!-- Bouton Retour en Arrière -->
             <button
               type="button"
               onclick="prevStep()"
@@ -76,7 +73,7 @@
             <span
               id="stepIndicator"
               class="text-[11px] font-extrabold uppercase tracking-widest text-slate-400"
-              >Question 1 / 15</span
+              >Question 1 / 16</span
             >
           </div>
           <span
@@ -87,11 +84,11 @@
         <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
           <div
             id="progressBar"
-            class="h-full bg-gradient-to-r from-blue-500 to-indigo-600 w-[6.6%] transition-all duration-300 rounded-full"></div>
+            class="h-full bg-gradient-to-r from-blue-500 to-indigo-600 w-[5.88%] transition-all duration-300 rounded-full"></div>
         </div>
       </div>
 
-      <!-- ÉTAPE 0 : ACCUEIL -->
+      <!-- STEP 0: ACCUEIL -->
       <div
         class="screen active"
         id="step0">
@@ -102,11 +99,11 @@
           </span>
           <div class="text-6xl my-4">📊</div>
           <h1
-            class="text-2xl font-black text-slate-900 tracking-tight leading-tight mb-3">
+            class="text-2xl font-black text-slate-900 tracking-tight mb-3 tracking-tight leading-tight mb-3">
             Améliorons le service après-vente (SAV) au Congo
           </h1>
           <p class="text-slate-500 text-sm leading-relaxed mb-6">
-            Participez à notre grande enquête de fin d'études. Nous collectons
+            Participez à notre grande enquetes de fin d'études. Nous collectons
             les vrais problèmes du terrain pour concevoir des solutions adaptées
             à nos réalités.
           </p>
@@ -118,9 +115,9 @@
                 Une participation unique et vérifiée
               </p>
               <p class="text-slate-500 mt-0.5">
-                Pour garantir le sérieux de notre étude devant le jury, un
-                numéro de téléphone vous sera demandé à la fin pour valider
-                votre soumission.
+                Pour garantir le sérieux de notre étude devant le jury, vos
+                informations de contact vous seront demandées à la fin pour
+                valider votre soumission.
               </p>
             </div>
           </div>
@@ -134,7 +131,7 @@
         </div>
       </div>
 
-      <!-- ÉTAPE 1 : GENRE -->
+      <!-- STEP 1 -->
       <div
         class="screen"
         id="step1">
@@ -174,7 +171,7 @@
         </div>
       </div>
 
-      <!-- ÉTAPE 2 : TRANCHE D'ÂGE -->
+      <!-- STEP 2 -->
       <div
         class="screen"
         id="step2">
@@ -212,7 +209,7 @@
         </div>
       </div>
 
-      <!-- ÉTAPE 3 : SECTEUR PRÉCIPUTAL -->
+      <!-- STEP 3 -->
       <div
         class="screen"
         id="step3">
@@ -222,7 +219,6 @@
         <p class="text-xs text-slate-400 mb-6">
           Sélectionnez un secteur ou écrivez votre propre réponse ci-dessous.
         </p>
-
         <div class="space-y-2 mb-4">
           <button
             type="button"
@@ -243,7 +239,6 @@
             🏦 Argent et Mobile Money
           </button>
         </div>
-
         <div class="border-t border-dashed border-slate-200 pt-3">
           <label
             class="block text-[11px] font-extrabold uppercase tracking-wider text-slate-400 mb-1.5"
@@ -265,7 +260,7 @@
         </div>
       </div>
 
-      <!-- ÉTAPE 4 : CONGO SPECIFIC - RECONNAISSANCE DES ERREURS -->
+      <!-- STEP 4 -->
       <div
         class="screen"
         id="step4">
@@ -298,7 +293,7 @@
         </div>
       </div>
 
-      <!-- ÉTAPE 5 : CONGO SPECIFIC - LES PROMISSES DE RAPPEL -->
+      <!-- STEP 5 -->
       <div
         class="screen"
         id="step5">
@@ -331,7 +326,7 @@
         </div>
       </div>
 
-      <!-- ÉTAPE 6 : CONGO SPECIFIC - LES COMPENSATIONS -->
+      <!-- STEP 6 -->
       <div
         class="screen"
         id="step6">
@@ -364,7 +359,7 @@
         </div>
       </div>
 
-      <!-- ÉTAPE 7 : FRÉQUENCE DES PROBLÈMES -->
+      <!-- STEP 7 -->
       <div
         class="screen"
         id="step7">
@@ -396,10 +391,43 @@
         </div>
       </div>
 
-      <!-- ÉTAPE 8 : CANAL PRÉFÉRÉ -->
+      <!-- STEP 8: NOUVELLE QUESTION AJOUTÉE -->
       <div
         class="screen"
         id="step8">
+        <h2 class="text-2xl font-black text-slate-900 tracking-tight mb-1.5">
+          Alerte de panne immédiate ?
+        </h2>
+        <p class="text-xs text-slate-400 mb-6">
+          Lorsque l'entreprise rencontre une panne générale, recevez-vous une
+          alerte immédiatement ?
+        </p>
+        <div class="space-y-3">
+          <button
+            type="button"
+            onclick="selectAndNext('alerte_panne', 'Oui', 8)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            🔔 Oui, je reçois un SMS ou une notification tout de suite
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('alerte_panne', 'Tardif', 8)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            ⏳ Oui, mais bien après le début de la panne (en retard)
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('alerte_panne', 'Jamais', 8)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            🔇 Jamais, je dois le découvrir par moi-même
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 9 -->
+      <div
+        class="screen"
+        id="step9">
         <h2 class="text-2xl font-black text-slate-900 tracking-tight mb-1.5">
           Votre moyen préféré ?
         </h2>
@@ -409,57 +437,56 @@
         <div class="space-y-3">
           <button
             type="button"
-            onclick="selectAndNext('canal_prefere', 'Reseaux sociaux, WhatsApp,facebook..', 8)"
+            onclick="selectAndNext('canal_prefere', 'Reseaux sociaux', 9)"
             class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
             💬 Réseaux sociaux (WhatsApp, Facebook)
           </button>
           <button
             type="button"
-            onclick="selectAndNext('canal_prefere', 'Appel', 8)"
+            onclick="selectAndNext('canal_prefere', 'Appel', 9)"
             class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
             📞 Appel téléphonique direct (Call Center)
           </button>
           <button
             type="button"
-            onclick="selectAndNext('canal_prefere', 'Agence', 8)"
+            onclick="selectAndNext('canal_prefere', 'Agence', 9)"
             class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
             🏃 Me déplacer physiquement en agence
           </button>
         </div>
       </div>
 
-      <!-- ÉTAPE 9 : PIRE FRUSTRATION CONTRAIGNANTE -->
+      <!-- STEP 10 -->
       <div
         class="screen"
-        id="step9">
+        id="step10">
         <h2 class="text-2xl font-black text-slate-900 tracking-tight mb-1.5">
           Qu'est-ce qui vous énerve le plus ?
         </h2>
         <p class="text-xs text-slate-400 mb-6">
-          Sélectionnez le pire défaut lorsque vous tentez de joindre le service client suite a une panne ou décrivez votre propre expérience.
+          Sélectionnez le pire défaut lorsque vous tentez de joindre le service
+          client ou décrivez votre expérience.
         </p>
-
         <div class="space-y-2 mb-4">
           <button
             type="button"
-            onclick="selectAndNext('frustration', 'Attente', 9)"
+            onclick="selectAndNext('frustration', 'Attente', 10)"
             class="w-full text-left p-3 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-xs text-slate-700">
             ⏳ La lenteur extrême de traitement et d'attente
           </button>
           <button
             type="button"
-            onclick="selectAndNext('frustration', 'Mepris', 9)"
+            onclick="selectAndNext('frustration', 'Mepris', 10)"
             class="w-full text-left p-3 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-xs text-slate-700">
             😒 Le manque de politesse, d'écoute ou l'arrogance
           </button>
           <button
             type="button"
-            onclick="selectAndNext('frustration', 'Incompetence', 9)"
+            onclick="selectAndNext('frustration', 'Incompetence', 10)"
             class="w-full text-left p-3 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-xs text-slate-700">
             🔄 Devoir répéter le problème à plusieurs agents sans suite
           </button>
         </div>
-
         <div class="border-t border-dashed border-slate-200 pt-3">
           <label
             class="block text-[11px] font-extrabold uppercase tracking-wider text-slate-400 mb-1.5"
@@ -474,7 +501,7 @@
             <button
               type="button"
               onclick="
-                submitCustomAnswer('frustration', 'custom_frustration', 9)
+                submitCustomAnswer('frustration', 'custom_frustration', 10)
               "
               class="bg-blue-600 text-white px-3 text-xs font-bold rounded-xl hover:bg-blue-700 transition-colors">
               OK
@@ -483,10 +510,10 @@
         </div>
       </div>
 
-      <!-- ÉTAPE 10 : RECHERCHE DU CONTACT -->
+      <!-- STEP 11 -->
       <div
         class="screen"
-        id="step10">
+        id="step11">
         <h2 class="text-2xl font-black text-slate-900 tracking-tight mb-1.5">
           La recherche est-elle difficile ?
         </h2>
@@ -496,55 +523,52 @@
         <div class="space-y-3">
           <button
             type="button"
-            onclick="selectAndNext('temps_perdu_recherche', 'Rapide', 10)"
+            onclick="selectAndNext('temps_perdu_recherche', 'Rapide', 11)"
             class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
             ⚡ Moins de 5 minutes
           </button>
           <button
             type="button"
-            onclick="selectAndNext('temps_perdu_recherche', 'Moyen', 10)"
+            onclick="selectAndNext('temps_perdu_recherche', 'Moyen', 11)"
             class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
             🧐 Long (faut chercher sur le net, demander partout)
           </button>
           <button
             type="button"
-            onclick="selectAndNext('temps_perdu_recherche', 'Abandon', 10)"
+            onclick="selectAndNext('temps_perdu_recherche', 'Abandon', 11)"
             class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
             😡 J'abandonne souvent par manque d'infos
           </button>
         </div>
       </div>
 
-      <!-- NOUVELLE ÉTAPE 11 : ENTREPRISES SANS SERVICE CLIENT -->
+      <!-- STEP 12 -->
       <div
         class="screen"
-        id="step11">
+        id="step12">
         <h2 class="text-2xl font-black text-slate-900 tracking-tight mb-1.5">
           Des entreprises introuvables ?
         </h2>
         <p class="text-xs text-slate-400 mb-6">
           Y a-t-il des sociétés au Congo où le service client est
-          <strong>inexistant</strong> ou impossible à joindre ?
+          <strong>inexistant</strong> ?
         </p>
-
         <div class="space-y-2 mb-4">
           <button
             type="button"
-            onclick="selectAndNext('societe_sans_sav', 'Oui_plusieurs', 11)"
+            onclick="selectAndNext('societe_sans_sav', 'Oui_plusieurs', 12)"
             class="w-full text-left p-3.5 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-xs text-slate-700">
-            ⚠️ Oui, beaucoup de PME ou de services n'ont aucun contact clair
+            ⚠️ Oui, beaucoup de PME n'ont aucun contact clair
           </button>
           <button
             type="button"
             onclick="
-              selectAndNext('societe_sans_sav', 'Uniquement_grandes', 11)
+              selectAndNext('societe_sans_sav', 'Uniquement_grandes', 12)
             "
             class="w-full text-left p-3.5 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-xs text-slate-700">
-            🏢 Non, seules les grandes structures en ont un, mais il est
-            inefficace
+            🏢 Non, seules les grandes structures en ont un, mais inefficace
           </button>
         </div>
-
         <div class="border-t border-dashed border-slate-200 pt-3">
           <label
             class="block text-[11px] font-extrabold uppercase tracking-wider text-slate-400 mb-1.5"
@@ -554,12 +578,12 @@
             <input
               type="text"
               id="custom_societe_sav"
-              placeholder="Ex: Une agence de transport, une boutique en ligne, la LCDE..."
+              placeholder="Ex: Une agence de transport, LCDE..."
               class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 focus:bg-white transition-all" />
             <button
               type="button"
               onclick="
-                submitCustomAnswer('societe_sans_sav', 'custom_societe_sav', 11)
+                submitCustomAnswer('societe_sans_sav', 'custom_societe_sav', 12)
               "
               class="bg-blue-600 text-white px-3 text-xs font-bold rounded-xl hover:bg-blue-700 transition-colors">
               OK
@@ -568,10 +592,10 @@
         </div>
       </div>
 
-      <!-- ÉTAPE 12 : RÉACTION FACE À LA DÉCEPTION -->
+      <!-- STEP 13 -->
       <div
         class="screen"
-        id="step12">
+        id="step13">
         <h2 class="text-2xl font-black text-slate-900 tracking-tight mb-1.5">
           Que faites-vous si vous êtes déçu ?
         </h2>
@@ -581,160 +605,156 @@
         <div class="space-y-3">
           <button
             type="button"
-            onclick="selectAndNext('comportement_deception', 'Proches', 12)"
+            onclick="selectAndNext('comportement_deception', 'Proches', 13)"
             class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
             🗣️ J'en parle de façon négative à mon entourage
           </button>
           <button
             type="button"
-            onclick="selectAndNext('comportement_deception', 'Reseaux', 12)"
+            onclick="selectAndNext('comportement_deception', 'Reseaux', 13)"
             class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
             🌐 Je publie mon coup de gueule sur Facebook/TikTok
           </button>
           <button
             type="button"
-            onclick="selectAndNext('comportement_deception', 'Rien', 12)"
+            onclick="selectAndNext('comportement_deception', 'Rien', 13)"
             class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
             🤫 Je garde ma frustration en silence
           </button>
         </div>
       </div>
 
-      <!-- ÉTAPE 13 : OMNICANALITÉ ET SUIVI -->
+      <!-- STEP 14 -->
       <div
         class="screen"
-        id="step13">
+        id="step14">
         <h2 class="text-2xl font-black text-slate-900 tracking-tight mb-1.5">
           L'entreprise suit-elle votre dossier ?
         </h2>
         <p class="text-xs text-slate-400 mb-6">
-          Si vous allez en boutique après avoir appelé ou écrit sur WhatsApp, l'entreprise ce souvient t'il de vous et de votre probleme ou vous devez encore l'explique ? :
+          Si vous allez en boutique après avoir appelé, se souvient-on de vous ?
         </p>
         <div class="space-y-3">
           <button
             type="button"
-            onclick="selectAndNext('memoire_agence', 'Oui_suivi', 13)"
+            onclick="selectAndNext('memoire_agence', 'Oui_suivi', 14)"
             class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
-            📂 Oui, ils ont directement trace de mes appels
+            📂 Oui, ils ont directement trace de mes démarches
           </button>
           <button
             type="button"
-            onclick="selectAndNext('memoire_agence', 'Non_recommencer', 13)"
+            onclick="selectAndNext('memoire_agence', 'Non_recommencer', 14)"
             class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
             🔄 Non, je dois recommencer toute l'histoire à zéro
           </button>
           <button
             type="button"
-            onclick="selectAndNext('memoire_agence', 'Jamais_alle', 13)"
+            onclick="selectAndNext('memoire_agence', 'Jamais_alle', 14)"
             class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
             🤷‍♂️ Je ne me déplace jamais
           </button>
         </div>
       </div>
 
-      <!-- ÉTAPE 14 : VALEUR D'UNE PLATEFORME CRM CENTRALISÉE -->
+      <!-- STEP 15 -->
       <div
         class="screen"
-        id="step14">
+        id="step15">
         <h2 class="text-2xl font-black text-slate-900 tracking-tight mb-1.5">
           Une application unique vous aiderait ?
         </h2>
         <p class="text-xs text-slate-400 mb-6">
           Un portail web unique qui centralise vos réclamations et fournit une
-          <strong>preuve datée</strong> de vos démarches :
+          preuve datée :
         </p>
         <div class="space-y-3">
           <button
             type="button"
-            onclick="selectAndNext('interet_app_unique', 'Oui_filtrage', 14)"
+            onclick="selectAndNext('interet_app_unique', 'Oui_filtrage', 15)"
             class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-xs text-slate-700">
             🎯 Très utile : pour atteindre immédiatement le bon service
             technique
           </button>
           <button
             type="button"
-            onclick="selectAndNext('interet_app_unique', 'Oui_historique', 14)"
+            onclick="selectAndNext('interet_app_unique', 'Oui_historique', 15)"
             class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-xs text-slate-700">
             📄 Très utile : pour conserver un historique écrit incontestable
           </button>
           <button
             type="button"
-            onclick="selectAndNext('interet_app_unique', 'Non_inutile', 14)"
+            onclick="selectAndNext('interet_app_unique', 'Non_inutile', 15)"
             class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-xs text-slate-700">
-            ❌ Inutile, je préfère galérer par moi-même
+            ❌ Inutile, je préfère faire comme avant
           </button>
         </div>
       </div>
 
-      <!-- ÉTAPE 15 : INTELLIGENCE ARTIFICIELLE -->
+      <!-- STEP 16 -->
       <div
         class="screen"
-        id="step15">
+        id="step16">
         <h2 class="text-2xl font-black text-slate-900 tracking-tight mb-1.5">
           Feriez-vous confiance à une IA ?
         </h2>
         <p class="text-xs text-slate-400 mb-6">
-          Confieriez-vous votre problème à un conseiller virtuel (chatbot)
-          automatique disponible 24h/24 ?
+          Confieriez-vous votre problemes à un conseiller virtuel (chatbot)
+          automatique 24h/24 ?
         </p>
         <div class="space-y-3">
           <button
             type="button"
-            onclick="selectAndNext('acceptation_ia', 'Oui', 15)"
+            onclick="selectAndNext('acceptation_ia', 'Oui', 16)"
             class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
             👍 Oui, si ça va plus vite pour être réparé
           </button>
           <button
             type="button"
-            onclick="selectAndNext('acceptation_ia', 'Non', 15)"
+            onclick="selectAndNext('acceptation_ia', 'Non', 16)"
             class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
-            👎 Non, je veux uniquement parler à un humain
-          </button>
-          <button
-            type="button"
-            onclick="selectAndNext('acceptation_ia', 'A voir', 15)"
-            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
-            🤔 À voir, s'il comprend bien nos coupures locales
+            👎 Non, je préfère parler à un humain direct
           </button>
         </div>
       </div>
 
-      <!-- ÉCRAN FINAL : ENREGISTREMENT ET DEMANDE DU NUMÉRO -->
+      <!-- STEP MERCI: FINALE DU SONDAGE ET NUMÉRO -->
       <div
         class="screen"
         id="stepMerci">
-        <div class="text-center py-2">
-          <div class="text-5xl mb-4">🔐</div>
+        <div class="text-center">
+          <div class="text-5xl mb-4">🎉</div>
           <h2 class="text-2xl font-black text-slate-900 tracking-tight mb-2">
-            Validation de votre vote
+            Dernière étape !
           </h2>
-          <p
-            class="text-slate-500 text-xs max-w-xs mx-auto leading-relaxed font-medium mb-5">
-            Pour éviter les doublons et certifier vos réponses face à notre jury
-            d'évaluation, merci d'entrer votre numéro de téléphone.
+          <p class="text-slate-500 text-sm mb-6 leading-relaxed">
+            Pour valider officiellement vos réponses de manière unique, veuillez
+            renseigner votre numéro de téléphone.
           </p>
-
-          <!-- Input pour le Numéro de Téléphone requis -->
-          <div class="max-w-xs mx-auto mb-4">
-            <input
-              type="tel"
-              id="user_phone"
-              placeholder="Ex: 06 600 00 00"
-              class="w-full px-4 py-3 text-sm text-center bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:border-blue-500 focus:bg-white font-bold transition-all" />
+          <div class="mb-6 text-left">
+            <label
+              for="user_phone"
+              class="block text-[11px] font-extrabold uppercase tracking-wider text-slate-400 mb-2">
+              Votre numéro de téléphone (9 chiffres) :
+            </label>
+            <div class="relative rounded-2xl shadow-sm">
+              <input
+                type="tel"
+                id="user_phone"
+                maxlength="9"
+                placeholder="Ex: 069420972"
+                class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:border-blue-500 focus:bg-white font-bold text-slate-800 tracking-wide transition-all" />
+            </div>
           </div>
-
-          <!-- Bouton de Soumission Finale -->
           <button
             type="button"
             onclick="submitFinalSurvey()"
-            class="w-full max-w-xs bg-blue-600 text-white font-extrabold py-3.5 rounded-2xl shadow-lg hover:bg-blue-700 active:scale-[0.98] transition-all text-sm tracking-wide mb-3">
-            🚀 Valider et envoyer mon avis
+            class="w-full bg-blue-600 text-white font-extrabold py-4 rounded-2xl shadow-xl hover:bg-blue-700 active:scale-[0.98] transition-all flex items-center justify-center space-x-2 text-sm tracking-wide">
+            <span>Envoyer mes réponses</span>
+            <span>🚀</span>
           </button>
         </div>
       </div>
     </div>
-
-    <!-- LOGIQUE JAVASCRIPT LOGIQUE ET ROBUSTE -->
-    <script src="in.js"></script>
   </body>
+  <script src="in.js"></script>
 </html>

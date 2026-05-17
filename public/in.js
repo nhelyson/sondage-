@@ -7,6 +7,7 @@ const surveyData = {
   promesse_rappel: "",
   compensation: "",
   frequence_panne: "",
+  alerte_panne: "Non spécifié (Ancien formulaire)", // <-- Valeur par défaut pour les anciens utilisateurs
   canal_prefere: "",
   frustration: "",
   temps_perdu_recherche: "",
@@ -19,7 +20,7 @@ const surveyData = {
 };
 
 let currentStepNum = 0;
-const totalSteps = 15;
+const totalSteps = 16; // Le nouveau total reste 16
 
 // Tableau pour enregistrer l'historique des étapes parcourues
 let stepHistory = [0];
@@ -31,12 +32,6 @@ function startSurvey() {
 
 // Passer à une étape spécifique
 function goToStep(nextStep, isGoingBack = false) {
-  // Sélectionner l'écran actuel et le prochain écran
-  const currentScreen = document.getElementById(
-    `step${currentStepNum === "Merci" ? "Merci" : currentStepNum}`,
-  );
-
-  // Mettre à jour l'index actuel
   currentStepNum = nextStep;
 
   const nextScreenId =
@@ -48,12 +43,11 @@ function goToStep(nextStep, isGoingBack = false) {
     s.classList.remove("active", "active-back");
   });
 
-  // Appliquer l'animation correspondante (droite-gauche ou gauche-droite)
+  // Appliquer l'animation correspondante
   if (isGoingBack) {
     if (nextScreen) nextScreen.classList.add("active-back");
   } else {
     if (nextScreen) nextScreen.classList.add("active");
-    // Enregistrer dans l'historique si on avance
     if (stepHistory[stepHistory.length - 1] !== nextStep) {
       stepHistory.push(nextStep);
     }
@@ -66,15 +60,18 @@ function goToStep(nextStep, isGoingBack = false) {
       header.classList.add("hidden");
     } else {
       header.classList.remove("hidden");
-      // Mettre à jour les indicateurs visuels du header
       const stepIndicator = document.getElementById("stepIndicator");
       const progressBar = document.getElementById("progressBar");
 
+      // S'adapter dynamiquement si l'utilisateur utilise l'ancien HTML (qui n'a pas de step16)
+      const hasStep16 = document.getElementById("step16") !== null;
+      const effectiveTotal = hasStep16 ? totalSteps : 15;
+
       if (stepIndicator) {
-        stepIndicator.innerText = `Question ${currentStepNum} / ${totalSteps}`;
+        stepIndicator.innerText = `Question ${currentStepNum} / ${effectiveTotal}`;
       }
       if (progressBar) {
-        const progressPercent = (currentStepNum / totalSteps) * 100;
+        const progressPercent = (currentStepNum / effectiveTotal) * 100;
         progressBar.style.width = `${progressPercent}%`;
       }
     }
@@ -84,9 +81,7 @@ function goToStep(nextStep, isGoingBack = false) {
 // Fonction de retour en arrière
 function prevStep() {
   if (stepHistory.length > 1) {
-    // Retirer l'étape actuelle de l'historique
     stepHistory.pop();
-    // Récupérer l'étape précédente
     const previousStep = stepHistory[stepHistory.length - 1];
     goToStep(previousStep, true);
   }
@@ -95,12 +90,15 @@ function prevStep() {
 // Enregistrer un choix par clic de bouton standard et passer à l'étape suivante
 function selectAndNext(key, value, stepId) {
   surveyData[key] = value;
+  console.log(`[DATA STORE UPDATE] Key: ${key} | Captured Text: "${value}"`);
 
-  // Progression logique
-  if (stepId < totalSteps) {
+  // Détection dynamique de la fin du formulaire (selon la version du HTML de l'utilisateur)
+  const hasStep16 = document.getElementById("step16") !== null;
+  const lastStepOfThisUser = hasStep16 ? totalSteps : 15;
+
+  if (stepId < lastStepOfThisUser) {
     goToStep(stepId + 1);
-  } else if (stepId === totalSteps) {
-    // Si c'est l'étape 15 mais sans le champ téléphone final, on gère la transition
+  } else {
     goToStep("Merci");
   }
 }
@@ -120,25 +118,64 @@ function submitCustomAnswer(key, inputId, stepId) {
     return;
   }
 
-  surveyData[key] = val; // Stockage de l'avis personnalisé écrit
+  surveyData[key] = val;
+  console.log(
+    `[DATA STORE UPDATE CUSTOM] Key: ${key} | Written Text: "${val}"`,
+  );
 
-  if (stepId < totalSteps) {
+  const hasStep16 = document.getElementById("step16") !== null;
+  const lastStepOfThisUser = hasStep16 ? totalSteps : 15;
+
+  if (stepId < lastStepOfThisUser) {
     goToStep(stepId + 1);
-  } else if (stepId === totalSteps) {
+  } else {
     goToStep("Merci");
   }
 }
 
 // Validation finale des données et envoi vers MongoDB Atlas
 function submitFinalSurvey() {
+  // Détection adaptative : est-ce un nouvel utilisateur (formulaire à 16 étapes) ?
+  const isNewForm = document.getElementById("step16") !== null;
+
+  if (isNewForm) {
+    // Pour le nouveau formulaire, acceptation_ia est à l'étape 16
+    if (!surveyData.acceptation_ia) {
+      alert(
+        "Veuillez d'abord sélectionner une réponse pour la question sur l'IA.",
+      );
+      return;
+    }
+  } else {
+    // Pour l'ancien formulaire, l'IA était à l'étape 15. On s'assure qu'une valeur y est stockée.
+    // L'ancienne étape 15 poussait sa valeur dans 'acceptation_ia'
+    if (!surveyData.acceptation_ia) {
+      alert("Veuillez répondre à toutes les questions avant de valider.");
+      return;
+    }
+    // On s'assure que la clé manquante ne reste pas vide pour MongoDB
+    if (!surveyData.alerte_panne) {
+      surveyData.alerte_panne = "Non spécifié (Ancien formulaire)";
+    }
+  }
+
   const phoneInput = document.getElementById("user_phone");
   if (!phoneInput) return;
 
   const phoneVal = phoneInput.value.trim();
+  const congoPhoneRegex = /^(04|05|06|22)\d{7}$/;
 
-  if (!phoneVal || phoneVal.length < 7) {
+  if (!phoneVal) {
     alert(
-      "Veuillez entrer un numéro de téléphone valide pour certifier votre participation.",
+      "Veuillez entrer votre numéro de téléphone pour certifier votre participation.",
+    );
+    phoneInput.focus();
+    return;
+  }
+
+  if (!congoPhoneRegex.test(phoneVal)) {
+    alert(
+      "Format invalide. Veuillez entrer un numéro conforme (ex: 069420972) à 9 chiffres.",
     );
     phoneInput.focus();
     return;
@@ -146,11 +183,10 @@ function submitFinalSurvey() {
 
   surveyData.phone = phoneVal;
 
-  // Affichage console final avant envoi
   console.log("=== SOUMISSION FINALE DU SONDAGE SAV CONGO ===");
   console.log(JSON.stringify(surveyData, null, 2));
 
-  // --- ENVOI DES DONNÉES AU SERVEUR NODE.JS ---
+  // --- ENVOI DES DONNÉES AU SERVEUR ---
   fetch("/api/survey", {
     method: "POST",
     headers: {
@@ -167,14 +203,10 @@ function submitFinalSurvey() {
     .then((result) => {
       if (result.success) {
         console.log("✅ Données enregistrées dans MongoDB ! ID :", result.id);
-
-        // Alerte de confirmation pour l'utilisateur
         alert(
           "Merci pour votre participation ! Vos réponses ont bien été enregistrées.",
         );
-
-        // Rechargement de la page pour vider le questionnaire et le rendre prêt pour le suivant
-        window.location.reload();
+        goToStep("Merci");
       } else {
         alert("Une erreur est survenue sur le serveur lors de la sauvegarde.");
       }
