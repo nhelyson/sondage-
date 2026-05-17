@@ -50,9 +50,9 @@ function goToStep(nextStep, isGoingBack = false) {
 
   // Appliquer l'animation correspondante (droite-gauche ou gauche-droite)
   if (isGoingBack) {
-    nextScreen.classList.add("active-back");
+    if (nextScreen) nextScreen.classList.add("active-back");
   } else {
-    nextScreen.classList.add("active");
+    if (nextScreen) nextScreen.classList.add("active");
     // Enregistrer dans l'historique si on avance
     if (stepHistory[stepHistory.length - 1] !== nextStep) {
       stepHistory.push(nextStep);
@@ -61,21 +61,29 @@ function goToStep(nextStep, isGoingBack = false) {
 
   // Gérer l'affichage du Header commun
   const header = document.getElementById("appHeader");
-  if (currentStepNum === 0 || currentStepNum === "Merci") {
-    header.classList.add("hidden");
-  } else {
-    header.classList.remove("hidden");
-    // Mettre à jour les indicateurs visuels du header
-    document.getElementById("stepIndicator").innerText =
-      `Question ${currentStepNum} / ${totalSteps}`;
-    const progressPercent = (currentStepNum / totalSteps) * 100;
-    document.getElementById("progressBar").style.width = `${progressPercent}%`;
+  if (header) {
+    if (currentStepNum === 0 || currentStepNum === "Merci") {
+      header.classList.add("hidden");
+    } else {
+      header.classList.remove("hidden");
+      // Mettre à jour les indicateurs visuels du header
+      const stepIndicator = document.getElementById("stepIndicator");
+      const progressBar = document.getElementById("progressBar");
+
+      if (stepIndicator) {
+        stepIndicator.innerText = `Question ${currentStepNum} / ${totalSteps}`;
+      }
+      if (progressBar) {
+        const progressPercent = (currentStepNum / totalSteps) * 100;
+        progressBar.style.width = `${progressPercent}%`;
+      }
+    }
   }
 }
 
 // Fonction de retour en arrière
 function prevStep() {
-  if (stepHistory[stepHistory.length > 1] || stepHistory.length === 1) {
+  if (stepHistory.length > 1) {
     // Retirer l'étape actuelle de l'historique
     stepHistory.pop();
     // Récupérer l'étape précédente
@@ -100,6 +108,8 @@ function selectAndNext(key, value, stepId) {
 // Traiter et soumettre une réponse écrite sur mesure (Custom Input Text)
 function submitCustomAnswer(key, inputId, stepId) {
   const inputEl = document.getElementById(inputId);
+  if (!inputEl) return;
+
   const val = inputEl.value.trim();
 
   if (!val) {
@@ -122,6 +132,8 @@ function submitCustomAnswer(key, inputId, stepId) {
 // Validation finale des données et envoi vers MongoDB Atlas
 function submitFinalSurvey() {
   const phoneInput = document.getElementById("user_phone");
+  if (!phoneInput) return;
+
   const phoneVal = phoneInput.value.trim();
 
   if (!phoneVal || phoneVal.length < 7) {
@@ -156,8 +168,13 @@ function submitFinalSurvey() {
       if (result.success) {
         console.log("✅ Données enregistrées dans MongoDB ! ID :", result.id);
 
-        // On bascule proprement l'utilisateur sur l'écran de remerciement
-        goToStep("Merci");
+        // Alerte de confirmation pour l'utilisateur
+        alert(
+          "Merci pour votre participation ! Vos réponses ont bien été enregistrées.",
+        );
+
+        // Rechargement de la page pour vider le questionnaire et le rendre prêt pour le suivant
+        window.location.reload();
       } else {
         alert("Une erreur est survenue sur le serveur lors de la sauvegarde.");
       }
