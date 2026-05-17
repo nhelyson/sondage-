@@ -163,7 +163,7 @@ function submitFinalSurvey() {
       return;
     }
     if (!surveyData.ville_residence) {
-      surveyData.ville_residence = "Non spécifié (Ancien formulaire)";
+      surveyData.ville_residence = "Brazzaville";
     }
   }
 
@@ -203,7 +203,8 @@ function submitFinalSurvey() {
     body: JSON.stringify(surveyData),
   })
     .then((response) => {
-      if (!response.ok) {
+      // Si le serveur renvoie une erreur 400 (doublon), on extrait quand même le JSON
+      if (!response.ok && response.status !== 400) {
         throw new Error("Erreur réseau lors de l'enregistrement");
       }
       return response.json();
@@ -215,6 +216,11 @@ function submitFinalSurvey() {
           "Merci pour votre participation ! Vos réponses ont bien été enregistrées.",
         );
         goToStep("Merci");
+      } else if (result.error === "duplicate") {
+        // Message d'indication clair en cas de doublon
+        alert(
+          "⚠️ Désolé, ce numéro de téléphone a déjà été enregistré pour ce sondage. Vous ne pouvez participer qu'une seule fois.",
+        );
       } else {
         alert("Une erreur est survenue sur le serveur lors de la sauvegarde.");
       }
