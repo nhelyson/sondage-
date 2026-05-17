@@ -7,7 +7,7 @@ const surveyData = {
   promesse_rappel: "",
   compensation: "",
   frequence_panne: "",
-  alerte_panne: "Non spécifié (Ancien formulaire)", // <-- Valeur par défaut pour les anciens utilisateurs
+  alerte_panne: "",
   canal_prefere: "",
   frustration: "",
   temps_perdu_recherche: "",
@@ -16,11 +16,12 @@ const surveyData = {
   memoire_agence: "",
   interet_app_unique: "",
   acceptation_ia: "",
+  ville_residence: "",
   phone: "",
 };
 
 let currentStepNum = 0;
-const totalSteps = 16; // Le nouveau total reste 16
+const totalSteps = 17; // <-- Passé à 17 étapes
 
 // Tableau pour enregistrer l'historique des étapes parcourues
 let stepHistory = [0];
@@ -63,9 +64,13 @@ function goToStep(nextStep, isGoingBack = false) {
       const stepIndicator = document.getElementById("stepIndicator");
       const progressBar = document.getElementById("progressBar");
 
-      // S'adapter dynamiquement si l'utilisateur utilise l'ancien HTML (qui n'a pas de step16)
+      // S'adapter dynamiquement selon la version du HTML
+      const hasStep17 = document.getElementById("step17") !== null;
       const hasStep16 = document.getElementById("step16") !== null;
-      const effectiveTotal = hasStep16 ? totalSteps : 15;
+
+      let effectiveTotal = 15; // Par défaut ancien
+      if (hasStep17) effectiveTotal = 17;
+      else if (hasStep16) effectiveTotal = 16;
 
       if (stepIndicator) {
         stepIndicator.innerText = `Question ${currentStepNum} / ${effectiveTotal}`;
@@ -92,9 +97,13 @@ function selectAndNext(key, value, stepId) {
   surveyData[key] = value;
   console.log(`[DATA STORE UPDATE] Key: ${key} | Captured Text: "${value}"`);
 
-  // Détection dynamique de la fin du formulaire (selon la version du HTML de l'utilisateur)
+  // Détection dynamique de la fin du formulaire (selon la version du HTML)
+  const hasStep17 = document.getElementById("step17") !== null;
   const hasStep16 = document.getElementById("step16") !== null;
-  const lastStepOfThisUser = hasStep16 ? totalSteps : 15;
+
+  let lastStepOfThisUser = 15;
+  if (hasStep17) lastStepOfThisUser = 17;
+  else if (hasStep16) lastStepOfThisUser = 16;
 
   if (stepId < lastStepOfThisUser) {
     goToStep(stepId + 1);
@@ -123,8 +132,12 @@ function submitCustomAnswer(key, inputId, stepId) {
     `[DATA STORE UPDATE CUSTOM] Key: ${key} | Written Text: "${val}"`,
   );
 
+  const hasStep17 = document.getElementById("step17") !== null;
   const hasStep16 = document.getElementById("step16") !== null;
-  const lastStepOfThisUser = hasStep16 ? totalSteps : 15;
+
+  let lastStepOfThisUser = 15;
+  if (hasStep17) lastStepOfThisUser = 17;
+  else if (hasStep16) lastStepOfThisUser = 16;
 
   if (stepId < lastStepOfThisUser) {
     goToStep(stepId + 1);
@@ -135,27 +148,22 @@ function submitCustomAnswer(key, inputId, stepId) {
 
 // Validation finale des données et envoi vers MongoDB Atlas
 function submitFinalSurvey() {
-  // Détection adaptative : est-ce un nouvel utilisateur (formulaire à 16 étapes) ?
-  const isNewForm = document.getElementById("step16") !== null;
+  const hasStep17 = document.getElementById("step17") !== null;
 
-  if (isNewForm) {
-    // Pour le nouveau formulaire, acceptation_ia est à l'étape 16
-    if (!surveyData.acceptation_ia) {
-      alert(
-        "Veuillez d'abord sélectionner une réponse pour la question sur l'IA.",
-      );
+  if (hasStep17) {
+    // Pour le nouveau formulaire à 17 étapes, on valide la ville de résidence
+    if (!surveyData.ville_residence) {
+      alert("Veuillez indiquer votre ville de résidence avant de valider.");
       return;
     }
   } else {
-    // Pour l'ancien formulaire, l'IA était à l'étape 15. On s'assure qu'une valeur y est stockée.
-    // L'ancienne étape 15 poussait sa valeur dans 'acceptation_ia'
+    // Rétrocompatibilité si un ancien formulaire est utilisé
     if (!surveyData.acceptation_ia) {
       alert("Veuillez répondre à toutes les questions avant de valider.");
       return;
     }
-    // On s'assure que la clé manquante ne reste pas vide pour MongoDB
-    if (!surveyData.alerte_panne) {
-      surveyData.alerte_panne = "Non spécifié (Ancien formulaire)";
+    if (!surveyData.ville_residence) {
+      surveyData.ville_residence = "Non spécifié (Ancien formulaire)";
     }
   }
 

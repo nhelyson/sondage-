@@ -45,7 +45,6 @@
     class="bg-slate-100 text-slate-800 font-sans min-h-screen flex items-center justify-center p-4 antialiased">
     <div
       class="w-full max-w-md bg-white rounded-[32px] shadow-[0_24px_48px_-12px_rgba(0,0,0,0.08)] p-7 border border-slate-100 relative overflow-hidden">
-      <!-- HEADER ET PROGRESSION -->
       <div
         id="appHeader"
         class="mb-8 hidden">
@@ -73,7 +72,7 @@
             <span
               id="stepIndicator"
               class="text-[11px] font-extrabold uppercase tracking-widest text-slate-400"
-              >Question 1 / 16</span
+              >Question 1 / 17</span
             >
           </div>
           <span
@@ -88,7 +87,6 @@
         </div>
       </div>
 
-      <!-- STEP 0: ACCUEIL -->
       <div
         class="screen active"
         id="step0">
@@ -99,7 +97,7 @@
           </span>
           <div class="text-6xl my-4">📊</div>
           <h1
-            class="text-2xl font-black text-slate-900 tracking-tight mb-3 tracking-tight leading-tight mb-3">
+            class="text-2xl font-black text-slate-900 tracking-tight leading-tight mb-3">
             Améliorons le service après-vente (SAV) au Congo
           </h1>
           <p class="text-slate-500 text-sm leading-relaxed mb-6">
@@ -131,7 +129,6 @@
         </div>
       </div>
 
-      <!-- STEP 1 -->
       <div
         class="screen"
         id="step1">
@@ -171,7 +168,6 @@
         </div>
       </div>
 
-      <!-- STEP 2 -->
       <div
         class="screen"
         id="step2">
@@ -209,7 +205,6 @@
         </div>
       </div>
 
-      <!-- STEP 3 -->
       <div
         class="screen"
         id="step3">
@@ -260,7 +255,6 @@
         </div>
       </div>
 
-      <!-- STEP 4 -->
       <div
         class="screen"
         id="step4">
@@ -293,7 +287,6 @@
         </div>
       </div>
 
-      <!-- STEP 5 -->
       <div
         class="screen"
         id="step5">
@@ -326,7 +319,6 @@
         </div>
       </div>
 
-      <!-- STEP 6 -->
       <div
         class="screen"
         id="step6">
@@ -359,7 +351,6 @@
         </div>
       </div>
 
-      <!-- STEP 7 -->
       <div
         class="screen"
         id="step7">
@@ -391,7 +382,6 @@
         </div>
       </div>
 
-      <!-- STEP 8: NOUVELLE QUESTION AJOUTÉE -->
       <div
         class="screen"
         id="step8">
@@ -424,7 +414,6 @@
         </div>
       </div>
 
-      <!-- STEP 9 -->
       <div
         class="screen"
         id="step9">
@@ -456,7 +445,6 @@
         </div>
       </div>
 
-      <!-- STEP 10 -->
       <div
         class="screen"
         id="step10">
@@ -510,7 +498,6 @@
         </div>
       </div>
 
-      <!-- STEP 11 -->
       <div
         class="screen"
         id="step11">
@@ -542,7 +529,6 @@
         </div>
       </div>
 
-      <!-- STEP 12 -->
       <div
         class="screen"
         id="step12">
@@ -592,7 +578,6 @@
         </div>
       </div>
 
-      <!-- STEP 13 -->
       <div
         class="screen"
         id="step13">
@@ -624,7 +609,6 @@
         </div>
       </div>
 
-      <!-- STEP 14 -->
       <div
         class="screen"
         id="step14">
@@ -656,7 +640,6 @@
         </div>
       </div>
 
-      <!-- STEP 15 -->
       <div
         class="screen"
         id="step15">
@@ -690,7 +673,7 @@
         </div>
       </div>
 
-      <!-- STEP 16 -->
+      <!-- ÉTAPE 15 : INTELLIGENCE ARTIFICIELLE -->
       <div
         class="screen"
         id="step16">
@@ -698,8 +681,8 @@
           Feriez-vous confiance à une IA ?
         </h2>
         <p class="text-xs text-slate-400 mb-6">
-          Confieriez-vous votre problemes à un conseiller virtuel (chatbot)
-          automatique 24h/24 ?
+          Confieriez-vous votre problème à un conseiller virtuel (chatbot)
+          automatique disponible 24h/24 ?
         </p>
         <div class="space-y-3">
           <button
@@ -712,12 +695,69 @@
             type="button"
             onclick="selectAndNext('acceptation_ia', 'Non', 16)"
             class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
-            👎 Non, je préfère parler à un humain direct
+            👎 Non, je veux uniquement parler à un humain
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('acceptation_ia', 'A voir', 16)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            🤔 À voir, s'il comprend bien nos besoins
           </button>
         </div>
       </div>
 
-      <!-- STEP MERCI: FINALE DU SONDAGE ET NUMÉRO -->
+      <div
+        class="screen"
+        id="step17">
+        <h2 class="text-2xl font-black text-slate-900 tracking-tight mb-1.5">
+          Dans quelle ville résidez-vous ?
+        </h2>
+        <p class="text-xs text-slate-400 mb-6">
+          Sélectionnez votre ville actuelle ou spécifiez-la ci-dessous.
+        </p>
+        <div class="space-y-3 mb-4">
+          <button
+            type="button"
+            onclick="selectAndNext('ville_residence', 'Brazzaville', 17)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            🏢 Brazzaville
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('ville_residence', 'Pointe-Noire', 17)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            🌊 Pointe-Noire
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('ville_residence', 'Hors du pays', 17)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            🌍 Hors du pays
+          </button>
+        </div>
+        <div class="border-t border-dashed border-slate-200 pt-3">
+          <label
+            class="block text-[11px] font-extrabold uppercase tracking-wider text-slate-400 mb-1.5"
+            >Autre (veuillez préciser) :</label
+          >
+          <div class="flex gap-2">
+            <input
+              type="text"
+              id="custom_ville"
+              placeholder="Ex: Dolisie, Ouesso, Kinkala..."
+              class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 focus:bg-white transition-all" />
+            <button
+              type="button"
+              onclick="
+                submitCustomAnswer('ville_residence', 'custom_ville', 17)
+              "
+              class="bg-blue-600 text-white px-3 text-xs font-bold rounded-xl hover:bg-blue-700 transition-colors">
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+
       <div
         class="screen"
         id="stepMerci">
@@ -726,35 +766,31 @@
           <h2 class="text-2xl font-black text-slate-900 tracking-tight mb-2">
             Dernière étape !
           </h2>
-          <p class="text-slate-500 text-sm mb-6 leading-relaxed">
-            Pour valider officiellement vos réponses de manière unique, veuillez
-            renseigner votre numéro de téléphone.
+          <p class="text-slate-500 text-sm leading-relaxed mb-6">
+            Pour valider vos réponses et certifier votre participation, merci
+            d'entrer votre numéro de téléphone.
           </p>
           <div class="mb-6 text-left">
             <label
               for="user_phone"
-              class="block text-[11px] font-extrabold uppercase tracking-wider text-slate-400 mb-2">
-              Votre numéro de téléphone (9 chiffres) :
-            </label>
-            <div class="relative rounded-2xl shadow-sm">
-              <input
-                type="tel"
-                id="user_phone"
-                maxlength="9"
-                placeholder="Ex: 069420972"
-                class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:border-blue-500 focus:bg-white font-bold text-slate-800 tracking-wide transition-all" />
-            </div>
+              class="block text-[11px] font-extrabold uppercase tracking-wider text-slate-400 mb-2"
+              >Numéro de téléphone (Congo)</label
+            >
+            <input
+              type="tel"
+              id="user_phone"
+              placeholder="Ex: 069420972"
+              class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:border-blue-500 focus:bg-white transition-all font-bold text-slate-800" />
           </div>
           <button
             type="button"
             onclick="submitFinalSurvey()"
-            class="w-full bg-blue-600 text-white font-extrabold py-4 rounded-2xl shadow-xl hover:bg-blue-700 active:scale-[0.98] transition-all flex items-center justify-center space-x-2 text-sm tracking-wide">
-            <span>Envoyer mes réponses</span>
-            <span>🚀</span>
+            class="w-full bg-blue-600 text-white font-extrabold py-4 rounded-2xl shadow-xl hover:bg-blue-700 active:scale-[0.98] transition-all text-sm tracking-wide">
+            Soumettre le questionnaire
           </button>
         </div>
       </div>
     </div>
+    <script src="in.js"></script>
   </body>
-  <script src="in.js"></script>
 </html>
