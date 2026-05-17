@@ -1,0 +1,740 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0" />
+    <title>Consultation Citoyenne - Service Client Congo</title>
+    <!-- Chargement de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      .screen {
+        display: none;
+      }
+      .screen.active {
+        display: block;
+        animation: slideLeft 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .screen.active-back {
+        display: block;
+        animation: slideRight 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      @keyframes slideLeft {
+        from {
+          opacity: 0;
+          transform: translateX(24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      @keyframes slideRight {
+        from {
+          opacity: 0;
+          transform: translateX(-24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+    </style>
+  </head>
+  <body
+    class="bg-slate-100 text-slate-800 font-sans min-h-screen flex items-center justify-center p-4 antialiased">
+    <!-- Conteneur Principal -->
+    <div
+      class="w-full max-w-md bg-white rounded-[32px] shadow-[0_24px_48px_-12px_rgba(0,0,0,0.08)] p-7 border border-slate-100 relative overflow-hidden">
+      <!-- HEADER AVEC BOUTON RETOUR ET BARRE DE PROGRESSION -->
+      <div
+        id="appHeader"
+        class="mb-8 hidden">
+        <div class="flex justify-between items-center mb-3">
+          <div class="flex items-center space-x-2">
+            <!-- Bouton Retour en Arrière -->
+            <button
+              type="button"
+              onclick="prevStep()"
+              class="mr-1 p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-xl transition-all flex items-center justify-center border border-transparent hover:border-slate-100"
+              title="Retour à la question précédente">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="2.5"
+                stroke="currentColor"
+                class="w-4 h-4">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+              </svg>
+            </button>
+            <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+            <span
+              id="stepIndicator"
+              class="text-[11px] font-extrabold uppercase tracking-widest text-slate-400"
+              >Question 1 / 15</span
+            >
+          </div>
+          <span
+            class="text-xs font-bold bg-slate-100 px-3 py-1 rounded-full text-slate-600 flex items-center gap-1.5 shadow-sm">
+            <span>🇨🇬</span> Congo
+          </span>
+        </div>
+        <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+          <div
+            id="progressBar"
+            class="h-full bg-gradient-to-r from-blue-500 to-indigo-600 w-[6.6%] transition-all duration-300 rounded-full"></div>
+        </div>
+      </div>
+
+      <!-- ÉTAPE 0 : ACCUEIL -->
+      <div
+        class="screen active"
+        id="step0">
+        <div class="text-center">
+          <span
+            class="inline-flex items-center gap-1.5 text-xs font-bold bg-blue-50 text-blue-700 px-4 py-1.5 rounded-full border border-blue-100 shadow-sm mb-4">
+            <span>🇨🇬</span> Étude Statistique 2026
+          </span>
+          <div class="text-6xl my-4">📊</div>
+          <h1
+            class="text-2xl font-black text-slate-900 tracking-tight leading-tight mb-3">
+            Améliorons le service après-vente (SAV) au Congo
+          </h1>
+          <p class="text-slate-500 text-sm leading-relaxed mb-6">
+            Participez à notre grande enquête de fin d'études. Nous collectons
+            les vrais problèmes du terrain pour concevoir des solutions adaptées
+            à nos réalités.
+          </p>
+          <div
+            class="bg-blue-50/50 border border-blue-100 rounded-2xl p-4 flex items-start gap-3 text-left mb-6">
+            <span class="text-xl">🛡️</span>
+            <div class="text-xs">
+              <p class="font-bold text-slate-800">
+                Une participation unique et vérifiée
+              </p>
+              <p class="text-slate-500 mt-0.5">
+                Pour garantir le sérieux de notre étude devant le jury, un
+                numéro de téléphone vous sera demandé à la fin pour valider
+                votre soumission.
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onclick="startSurvey()"
+            class="w-full bg-slate-900 text-white font-extrabold py-4 rounded-2xl shadow-xl hover:bg-slate-800 active:scale-[0.98] transition-all flex items-center justify-center space-x-2 text-sm tracking-wide">
+            <span>Donner mon avis (3 min)</span>
+            <span>➡️</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ÉTAPE 1 : GENRE -->
+      <div
+        class="screen"
+        id="step1">
+        <h2 class="text-2xl font-black text-slate-900 tracking-tight mb-1.5">
+          Vous êtes...
+        </h2>
+        <p class="text-xs text-slate-400 mb-6">
+          Aidez-nous à équilibrer notre échantillon.
+        </p>
+        <div class="grid grid-cols-2 gap-4">
+          <button
+            type="button"
+            onclick="selectAndNext('genre', 'Femme', 1)"
+            class="p-6 rounded-2xl bg-slate-50/60 hover:bg-white hover:border-blue-500/60 hover:shadow-md border border-slate-100 transition-all flex flex-col items-center justify-center space-y-3 group">
+            <span
+              class="text-4xl p-3 rounded-2xl bg-white group-hover:bg-blue-50 shadow-sm transition-colors"
+              >👩‍💼</span
+            >
+            <span
+              class="font-bold tracking-tight text-sm text-slate-700 group-hover:text-blue-600"
+              >Une Femme</span
+            >
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('genre', 'Homme', 1)"
+            class="p-6 rounded-2xl bg-slate-50/60 hover:bg-white hover:border-blue-500/60 hover:shadow-md border border-slate-100 transition-all flex flex-col items-center justify-center space-y-3 group">
+            <span
+              class="text-4xl p-3 rounded-2xl bg-white group-hover:bg-blue-50 shadow-sm transition-colors"
+              >👨‍💼</span
+            >
+            <span
+              class="font-bold tracking-tight text-sm text-slate-700 group-hover:text-blue-600"
+              >Un Homme</span
+            >
+          </button>
+        </div>
+      </div>
+
+      <!-- ÉTAPE 2 : TRANCHE D'ÂGE -->
+      <div
+        class="screen"
+        id="step2">
+        <h2 class="text-2xl font-black text-slate-900 tracking-tight mb-1.5">
+          Quel est votre âge ?
+        </h2>
+        <p class="text-xs text-slate-400 mb-6">
+          Sélectionnez votre tranche d'âge.
+        </p>
+        <div class="space-y-3">
+          <button
+            type="button"
+            onclick="selectAndNext('age', '-18', 2)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700 flex items-center gap-3">
+            🇨🇬 Moins de 18 ans
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('age', '18-25', 2)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700 flex items-center gap-3">
+            🎓 18 à 25 ans
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('age', '26-35', 2)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700 flex items-center gap-3">
+            💼 26 à 35 ans
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('age', '35+', 2)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700 flex items-center gap-3">
+            👔 Plus de 35 ans
+          </button>
+        </div>
+      </div>
+
+      <!-- ÉTAPE 3 : SECTEUR PRÉCIPUTAL -->
+      <div
+        class="screen"
+        id="step3">
+        <h2 class="text-2xl font-black text-slate-900 tracking-tight mb-1.5">
+          Où rencontrez-vous le plus de pannes ?
+        </h2>
+        <p class="text-xs text-slate-400 mb-6">
+          Sélectionnez un secteur ou écrivez votre propre réponse ci-dessous.
+        </p>
+
+        <div class="space-y-2 mb-4">
+          <button
+            type="button"
+            onclick="selectAndNext('secteur', 'Telecom', 3)"
+            class="w-full text-left p-3 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-xs text-slate-700">
+            📱 Internet et Téléphonie (MTN, Airtel...)
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('secteur', 'Energie', 3)"
+            class="w-full text-left p-3 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-xs text-slate-700">
+            💡 Eau et Électricité (E2C, LCDE...)
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('secteur', 'Banque', 3)"
+            class="w-full text-left p-3 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-xs text-slate-700">
+            🏦 Argent et Mobile Money
+          </button>
+        </div>
+
+        <div class="border-t border-dashed border-slate-200 pt-3">
+          <label
+            class="block text-[11px] font-extrabold uppercase tracking-wider text-slate-400 mb-1.5"
+            >Autre secteur spécifique :</label
+          >
+          <div class="flex gap-2">
+            <input
+              type="text"
+              id="custom_secteur"
+              placeholder="Ex: Transport, Assurances, administration..."
+              class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 focus:bg-white transition-all" />
+            <button
+              type="button"
+              onclick="submitCustomAnswer('secteur', 'custom_secteur', 3)"
+              class="bg-blue-600 text-white px-3 text-xs font-bold rounded-xl hover:bg-blue-700 transition-colors">
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ÉTAPE 4 : CONGO SPECIFIC - RECONNAISSANCE DES ERREURS -->
+      <div
+        class="screen"
+        id="step4">
+        <h2 class="text-2xl font-black text-slate-900 tracking-tight mb-1.5">
+          L'entreprise reconnaît-elle ses torts ?
+        </h2>
+        <p class="text-xs text-slate-400 mb-6">
+          Lors d'une coupure de réseau ou d'une erreur de facturation
+          injustifiée au Congo :
+        </p>
+        <div class="space-y-3">
+          <button
+            type="button"
+            onclick="selectAndNext('reconnaissance_torts', 'Jamais', 4)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            ❌ Jamais, ils rejettent toujours la faute sur l'utilisateur
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('reconnaissance_torts', 'Rarement', 4)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            ⏳ Rarement, il faut insister ou faire du bruit
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('reconnaissance_torts', 'Professionnel', 4)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            🤝 Oui, ils s'excusent et règlent le problème professionnellement
+          </button>
+        </div>
+      </div>
+
+      <!-- ÉTAPE 5 : CONGO SPECIFIC - LES PROMISSES DE RAPPEL -->
+      <div
+        class="screen"
+        id="step5">
+        <h2 class="text-2xl font-black text-slate-900 tracking-tight mb-1.5">
+          "On vous rappelle" : Mythe ou réalité ?
+        </h2>
+        <p class="text-xs text-slate-400 mb-6">
+          Quand un agent au guichet ou au téléphone dit qu'un technicien va vous
+          recontacter :
+        </p>
+        <div class="space-y-3">
+          <button
+            type="button"
+            onclick="selectAndNext('promesse_rappel', 'Rappellent_jamais', 5)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            🚫 Ils ne rappellent jamais, c'est à moi de relancer 10 fois
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('promesse_rappel', 'Retard_enorme', 5)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            ⏳ Ils rappellent mais avec plusieurs jours/semaines de retard
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('promesse_rappel', 'Respecte', 5)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            ⚡ Le délai promis est généralement respecté
+          </button>
+        </div>
+      </div>
+
+      <!-- ÉTAPE 6 : CONGO SPECIFIC - LES COMPENSATIONS -->
+      <div
+        class="screen"
+        id="step6">
+        <h2 class="text-2xl font-black text-slate-900 tracking-tight mb-1.5">
+          Y a-t-il des dédommagements ?
+        </h2>
+        <p class="text-xs text-slate-400 mb-6">
+          En cas de préjudice lourd (forfait perdu sans raison, coupure
+          prolongée) :
+        </p>
+        <div class="space-y-3">
+          <button
+            type="button"
+            onclick="selectAndNext('compensation', 'Aucune', 6)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            🤷‍♂️ Aucune compensation, l'argent est perdu
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('compensation', 'Derisoire', 6)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            🎟️ Une compensation dérisoire après de longues plaintes
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('compensation', 'Automatique', 6)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            🎁 Remboursement ou bonus automatique octroyé
+          </button>
+        </div>
+      </div>
+
+      <!-- ÉTAPE 7 : FRÉQUENCE DES PROBLÈMES -->
+      <div
+        class="screen"
+        id="step7">
+        <h2 class="text-2xl font-black text-slate-900 tracking-tight mb-1.5">
+          À quelle fréquence ?
+        </h2>
+        <p class="text-xs text-slate-400 mb-6">
+          Tous les combien de temps subissez-vous ces anomalies ?
+        </p>
+        <div class="space-y-3">
+          <button
+            type="button"
+            onclick="selectAndNext('frequence_panne', 'Souvent', 7)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            ⚠️ Plusieurs fois par semaine
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('frequence_panne', 'Rarement', 7)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            📅 Quelques fois par mois
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('frequence_panne', 'Exceptionnel', 7)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            🧘 C'est très rare
+          </button>
+        </div>
+      </div>
+
+      <!-- ÉTAPE 8 : CANAL PRÉFÉRÉ -->
+      <div
+        class="screen"
+        id="step8">
+        <h2 class="text-2xl font-black text-slate-900 tracking-tight mb-1.5">
+          Votre moyen préféré ?
+        </h2>
+        <p class="text-xs text-slate-400 mb-6">
+          Comment préférez-vous émettre une réclamation ?
+        </p>
+        <div class="space-y-3">
+          <button
+            type="button"
+            onclick="selectAndNext('canal_prefere', 'Reseaux sociaux, WhatsApp,facebook..', 8)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            💬 Réseaux sociaux (WhatsApp, Facebook)
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('canal_prefere', 'Appel', 8)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            📞 Appel téléphonique direct (Call Center)
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('canal_prefere', 'Agence', 8)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            🏃 Me déplacer physiquement en agence
+          </button>
+        </div>
+      </div>
+
+      <!-- ÉTAPE 9 : PIRE FRUSTRATION CONTRAIGNANTE -->
+      <div
+        class="screen"
+        id="step9">
+        <h2 class="text-2xl font-black text-slate-900 tracking-tight mb-1.5">
+          Qu'est-ce qui vous énerve le plus ?
+        </h2>
+        <p class="text-xs text-slate-400 mb-6">
+          Sélectionnez le pire défaut lorsque vous tentez de joindre le service client suite a une panne ou décrivez votre propre expérience.
+        </p>
+
+        <div class="space-y-2 mb-4">
+          <button
+            type="button"
+            onclick="selectAndNext('frustration', 'Attente', 9)"
+            class="w-full text-left p-3 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-xs text-slate-700">
+            ⏳ La lenteur extrême de traitement et d'attente
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('frustration', 'Mepris', 9)"
+            class="w-full text-left p-3 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-xs text-slate-700">
+            😒 Le manque de politesse, d'écoute ou l'arrogance
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('frustration', 'Incompetence', 9)"
+            class="w-full text-left p-3 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-xs text-slate-700">
+            🔄 Devoir répéter le problème à plusieurs agents sans suite
+          </button>
+        </div>
+
+        <div class="border-t border-dashed border-slate-200 pt-3">
+          <label
+            class="block text-[11px] font-extrabold uppercase tracking-wider text-slate-400 mb-1.5"
+            >Expliquez votre pire frustration en quelques mots :</label
+          >
+          <div class="flex gap-2">
+            <input
+              type="text"
+              id="custom_frustration"
+              placeholder="Ex: Les agents raccrochent au nez, favoritisme..."
+              class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 focus:bg-white transition-all" />
+            <button
+              type="button"
+              onclick="
+                submitCustomAnswer('frustration', 'custom_frustration', 9)
+              "
+              class="bg-blue-600 text-white px-3 text-xs font-bold rounded-xl hover:bg-blue-700 transition-colors">
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ÉTAPE 10 : RECHERCHE DU CONTACT -->
+      <div
+        class="screen"
+        id="step10">
+        <h2 class="text-2xl font-black text-slate-900 tracking-tight mb-1.5">
+          La recherche est-elle difficile ?
+        </h2>
+        <p class="text-xs text-slate-400 mb-6">
+          Trouver le contact direct pour réclamer prend combien de temps ?
+        </p>
+        <div class="space-y-3">
+          <button
+            type="button"
+            onclick="selectAndNext('temps_perdu_recherche', 'Rapide', 10)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            ⚡ Moins de 5 minutes
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('temps_perdu_recherche', 'Moyen', 10)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            🧐 Long (faut chercher sur le net, demander partout)
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('temps_perdu_recherche', 'Abandon', 10)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            😡 J'abandonne souvent par manque d'infos
+          </button>
+        </div>
+      </div>
+
+      <!-- NOUVELLE ÉTAPE 11 : ENTREPRISES SANS SERVICE CLIENT -->
+      <div
+        class="screen"
+        id="step11">
+        <h2 class="text-2xl font-black text-slate-900 tracking-tight mb-1.5">
+          Des entreprises introuvables ?
+        </h2>
+        <p class="text-xs text-slate-400 mb-6">
+          Y a-t-il des sociétés au Congo où le service client est
+          <strong>inexistant</strong> ou impossible à joindre ?
+        </p>
+
+        <div class="space-y-2 mb-4">
+          <button
+            type="button"
+            onclick="selectAndNext('societe_sans_sav', 'Oui_plusieurs', 11)"
+            class="w-full text-left p-3.5 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-xs text-slate-700">
+            ⚠️ Oui, beaucoup de PME ou de services n'ont aucun contact clair
+          </button>
+          <button
+            type="button"
+            onclick="
+              selectAndNext('societe_sans_sav', 'Uniquement_grandes', 11)
+            "
+            class="w-full text-left p-3.5 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-xs text-slate-700">
+            🏢 Non, seules les grandes structures en ont un, mais il est
+            inefficace
+          </button>
+        </div>
+
+        <div class="border-t border-dashed border-slate-200 pt-3">
+          <label
+            class="block text-[11px] font-extrabold uppercase tracking-wider text-slate-400 mb-1.5"
+            >Citez une entreprise difficile à contacter :</label
+          >
+          <div class="flex gap-2">
+            <input
+              type="text"
+              id="custom_societe_sav"
+              placeholder="Ex: Une agence de transport, une boutique en ligne, la LCDE..."
+              class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 focus:bg-white transition-all" />
+            <button
+              type="button"
+              onclick="
+                submitCustomAnswer('societe_sans_sav', 'custom_societe_sav', 11)
+              "
+              class="bg-blue-600 text-white px-3 text-xs font-bold rounded-xl hover:bg-blue-700 transition-colors">
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ÉTAPE 12 : RÉACTION FACE À LA DÉCEPTION -->
+      <div
+        class="screen"
+        id="step12">
+        <h2 class="text-2xl font-black text-slate-900 tracking-tight mb-1.5">
+          Que faites-vous si vous êtes déçu ?
+        </h2>
+        <p class="text-xs text-slate-400 mb-6">
+          Quand le service client ne résout pas votre problème :
+        </p>
+        <div class="space-y-3">
+          <button
+            type="button"
+            onclick="selectAndNext('comportement_deception', 'Proches', 12)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            🗣️ J'en parle de façon négative à mon entourage
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('comportement_deception', 'Reseaux', 12)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            🌐 Je publie mon coup de gueule sur Facebook/TikTok
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('comportement_deception', 'Rien', 12)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            🤫 Je garde ma frustration en silence
+          </button>
+        </div>
+      </div>
+
+      <!-- ÉTAPE 13 : OMNICANALITÉ ET SUIVI -->
+      <div
+        class="screen"
+        id="step13">
+        <h2 class="text-2xl font-black text-slate-900 tracking-tight mb-1.5">
+          L'entreprise suit-elle votre dossier ?
+        </h2>
+        <p class="text-xs text-slate-400 mb-6">
+          Si vous allez en boutique après avoir appelé ou écrit sur WhatsApp, l'entreprise ce souvient t'il de vous et de votre probleme ou vous devez encore l'explique ? :
+        </p>
+        <div class="space-y-3">
+          <button
+            type="button"
+            onclick="selectAndNext('memoire_agence', 'Oui_suivi', 13)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            📂 Oui, ils ont directement trace de mes appels
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('memoire_agence', 'Non_recommencer', 13)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            🔄 Non, je dois recommencer toute l'histoire à zéro
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('memoire_agence', 'Jamais_alle', 13)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            🤷‍♂️ Je ne me déplace jamais
+          </button>
+        </div>
+      </div>
+
+      <!-- ÉTAPE 14 : VALEUR D'UNE PLATEFORME CRM CENTRALISÉE -->
+      <div
+        class="screen"
+        id="step14">
+        <h2 class="text-2xl font-black text-slate-900 tracking-tight mb-1.5">
+          Une application unique vous aiderait ?
+        </h2>
+        <p class="text-xs text-slate-400 mb-6">
+          Un portail web unique qui centralise vos réclamations et fournit une
+          <strong>preuve datée</strong> de vos démarches :
+        </p>
+        <div class="space-y-3">
+          <button
+            type="button"
+            onclick="selectAndNext('interet_app_unique', 'Oui_filtrage', 14)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-xs text-slate-700">
+            🎯 Très utile : pour atteindre immédiatement le bon service
+            technique
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('interet_app_unique', 'Oui_historique', 14)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-xs text-slate-700">
+            📄 Très utile : pour conserver un historique écrit incontestable
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('interet_app_unique', 'Non_inutile', 14)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-xs text-slate-700">
+            ❌ Inutile, je préfère galérer par moi-même
+          </button>
+        </div>
+      </div>
+
+      <!-- ÉTAPE 15 : INTELLIGENCE ARTIFICIELLE -->
+      <div
+        class="screen"
+        id="step15">
+        <h2 class="text-2xl font-black text-slate-900 tracking-tight mb-1.5">
+          Feriez-vous confiance à une IA ?
+        </h2>
+        <p class="text-xs text-slate-400 mb-6">
+          Confieriez-vous votre problème à un conseiller virtuel (chatbot)
+          automatique disponible 24h/24 ?
+        </p>
+        <div class="space-y-3">
+          <button
+            type="button"
+            onclick="selectAndNext('acceptation_ia', 'Oui', 15)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            👍 Oui, si ça va plus vite pour être réparé
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('acceptation_ia', 'Non', 15)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            👎 Non, je veux uniquement parler à un humain
+          </button>
+          <button
+            type="button"
+            onclick="selectAndNext('acceptation_ia', 'A voir', 15)"
+            class="w-full text-left p-4 rounded-xl bg-slate-50/60 hover:bg-white hover:border-blue-500/50 border border-slate-100 transition-all font-bold text-sm text-slate-700">
+            🤔 À voir, s'il comprend bien nos coupures locales
+          </button>
+        </div>
+      </div>
+
+      <!-- ÉCRAN FINAL : ENREGISTREMENT ET DEMANDE DU NUMÉRO -->
+      <div
+        class="screen"
+        id="stepMerci">
+        <div class="text-center py-2">
+          <div class="text-5xl mb-4">🔐</div>
+          <h2 class="text-2xl font-black text-slate-900 tracking-tight mb-2">
+            Validation de votre vote
+          </h2>
+          <p
+            class="text-slate-500 text-xs max-w-xs mx-auto leading-relaxed font-medium mb-5">
+            Pour éviter les doublons et certifier vos réponses face à notre jury
+            d'évaluation, merci d'entrer votre numéro de téléphone.
+          </p>
+
+          <!-- Input pour le Numéro de Téléphone requis -->
+          <div class="max-w-xs mx-auto mb-4">
+            <input
+              type="tel"
+              id="user_phone"
+              placeholder="Ex: 06 600 00 00"
+              class="w-full px-4 py-3 text-sm text-center bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:border-blue-500 focus:bg-white font-bold transition-all" />
+          </div>
+
+          <!-- Bouton de Soumission Finale -->
+          <button
+            type="button"
+            onclick="submitFinalSurvey()"
+            class="w-full max-w-xs bg-blue-600 text-white font-extrabold py-3.5 rounded-2xl shadow-lg hover:bg-blue-700 active:scale-[0.98] transition-all text-sm tracking-wide mb-3">
+            🚀 Valider et envoyer mon avis
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOGIQUE JAVASCRIPT LOGIQUE ET ROBUSTE -->
+    <script src="in.js"></script>
+  </body>
+</html>
